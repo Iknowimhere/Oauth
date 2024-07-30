@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>User Profile</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="profile-info">
+            <h2>Welcome, <%= user.username %></h2>
+            <img src="<%= user.avatar %>" alt="Profile Picture" class="profile-picture">
+            <p>Email: <%= user.email %></p>
+            <p>Member since: <%= user.createdAt.toDateString() %></p>
+        </section>
+
+        <section class="user-posts">
+            <h3>Your Posts</h3>
+            <% if (posts.length > 0) { %>
+                <ul>
+                    <% posts.forEach(function(post) { %>
+                        <li>
+                            <h4><%= post.title %></h4>
+                            <p><%= post.content.substring(0, 100) %>...</p>
+                            <a href="/posts/<%= post._id %>">Read more</a>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>You haven't made any posts yet.</p>
+            <% } %>
+        </section>
+
+        <section class="edit-profile">
+            <h3>Edit Profile</h3>
+            <form action="/profile/update" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="<%= user.username %>" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" required>
+
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio"><%= user.bio %></textarea>
+
+                <button type="submit">Update Profile</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 Your Website Name. All rights reserved.</p>
+    </footer>
+</body>
+</html>

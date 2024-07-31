@@ -1,9 +1,17 @@
 import express from "express";
 
-let router=express.Router();
+let router = express.Router();
 
-router.get("/",(req,res)=>{
-    res.render("profile");
-})
+const auth = (req, res, next) => {
+  if (!req.user) {
+    res.redirect("/");
+  } else {
+    next();
+  }
+};
+
+router.get("/", auth, (req, res) => {
+  res.render("profile", { user: req.user });
+});
 
 export default router;
